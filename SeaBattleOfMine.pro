@@ -30,7 +30,8 @@ SOURCES += \
     field.cpp \
     controller.cpp \
     model.cpp \
-    table.cpp
+    table.cpp \
+    ships.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -38,7 +39,9 @@ HEADERS += \
     controller.h \
     model.h \
     table.h \
-    defines.h
+    defines.h \
+    used_libraries.h \
+    ships.h
 
 FORMS += \
         mainwindow.ui

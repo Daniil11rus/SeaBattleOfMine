@@ -1,8 +1,7 @@
 #ifndef TABLE_H
 #define TABLE_H
 
-#include <QPainter>
-#include <QMainWindow>
+#include "used_libraries.h"
 
 class Table
 {
@@ -12,7 +11,7 @@ private:
     QPoint tableBegin;
 
 public:
-    Table() {}
+    Table();
     Table(int cellSide, QPoint cellBegin);
     void setTableCellSide(int cellSide);
     void setTableBegin(QPoint cellBegin);

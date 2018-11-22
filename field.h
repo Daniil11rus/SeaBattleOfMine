@@ -1,9 +1,7 @@
 #ifndef FIELD_H
 #define FIELD_H
 
-#include <QtGui>
-#include <QPainter>
-#include <QtCore>
+#include "used_libraries.h"
 
 enum Cell
 {
@@ -14,7 +12,9 @@ enum Cell
 };
 
 int findCellInMyField(QPoint pos);
-QPoint getCentreOfCell(int ind);
+int findCellInEnField(QPoint pos);
+QPoint getCentreOfMyCell(int ind);
+QPoint getCentreOfEnCell(int ind);
 
 
 class Field

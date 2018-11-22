@@ -2,9 +2,7 @@
 #include "ui_mainwindow.h"
 #include "table.h"
 #include "defines.h"
-#include <QStyle>
-#include <QDesktopWidget>
-#include <QObject>
+#include "used_libraries.h"
 
 void MainWindow::moveToCenter()
 {
@@ -34,39 +32,42 @@ void MainWindow::mousePressEvent(QMouseEvent *ev)
     }
 }
 
-MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow)
+void MainWindow::setupGame()
 {
-    ui->setupUi(this);
+    this->ui->setupUi(this);
+    this->model = new Model;
+    this->controller = new Controller(model);
     this->moveToCenter();
-    model = new Model;
-    model->setState(SETTING);
-    controller = new Controller(model);
+    this->buttonSet = new QPushButton("Set ships!", this);
+    this->buttonSet->setGeometry(QRect(QPoint(100, 625), QSize(100, 50)));
+    this->buttonSet->show();
+    QObject::connect(buttonSet, SIGNAL(clicked()), this, SLOT(buttonSetClicked()));
 }
 
 void MainWindow::paintEvent(QPaintEvent *)
 {
-    Table myTable;
-    Table enTable;
-    QPoint my_pBegin(MY_PX_BEGIN, MY_PY_BEGIN);
-    QPoint en_pBegin (EN_PX_BEGIN, EN_PY_BEGIN);
+    this->model->defineMyTable();
+    this->model->defineEnTable();
 
-    myTable.setTableBegin(my_pBegin);
-    myTable.setTableCellSide(CELL_SIDE);
-    enTable.setTableBegin(en_pBegin);
-    enTable.setTableCellSide(CELL_SIDE);
+    this->model->drawMyTable(this);
+    this->model->drawEnTable(this);
+}
 
-    myTable.tableDefine();
-    enTable.tableDefine();
+void MainWindow::buttonSetClicked()
+{
+    this->controller->onButtonSetClicked(this, this->buttonSet);
+}
 
-    QString sMyField = model->getMyField();
-    QString sEnField = model->getEnField();
-    myTable.drawTable(this, sMyField);
-    enTable.drawTable(this, sEnField);
+MainWindow::MainWindow(QWidget *parent) :
+    QMainWindow(parent),
+    ui(new Ui::MainWindow)
+{
+    this->setupGame();
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete model;
+    delete controller;
 }
